@@ -30,13 +30,21 @@ public class StepDefinitions {
         caps.setCapability("os_version", "14.0");
         caps.setCapability("name", "BStack-[Java] Sample Test"); // test name
         caps.setCapability("build", "BStack Build Number 1"); // CI/CD job or build name
-        final WebDriver driver = new ChromeDriver();
-//        final WebDriver driver = new RemoteWebDriver(new URL(URL), caps);
+//        final WebDriver driver = new ChromeDriver();
+        final WebDriver driver = new RemoteWebDriver(new URL(URL), caps);
         try {
             driver.get("https://www.google.com");
-            driver.findElement(By.xpath("//div[text()='Ik ga akkoord']")).click();
+            Thread.sleep(2000);
+
+            File source1 = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            String path1 = "./target/screenshots/chromeMain_" + caps.getBrowserName() + ".png";
+            FileUtils.copyFile(source1, new File(path1));
+
+//            driver.findElement(By.xpath("//div[text()='Ik ga akkoord']")).click();
             driver.findElement(By.xpath("//input[@name='q']")).sendKeys("Selenium");
             driver.findElement(By.xpath("//input[@name='q']")).submit();
+
+            Thread.sleep(1000);
 
 //            Screenshot maken van zoekresultaten pagina
             System.out.println(caps.getBrowserName());
